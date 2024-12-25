@@ -1,48 +1,49 @@
 from app.core.config import settings
 
 
+# Тег для ссылок авторизации.
 AUTH_TAG_URL: str = 'auth'
-"""Тег для ссылок авторизации."""
 
+# Тег для ссылок пользователей.
 USER_TAG_URL: str = 'users'
-"""Тег для ссылок пользователей."""
 
+# Адрес пожертвований пользователя.
 MY_DONATION_URL: str = '/my'
-"""Адрес пожертвований пользователя."""
 
+# """Адрес проекта (удаление и обновление)."""
 PROJECTS_URL: str = '/{project_id}'
-"""Адрес проекта (удаление и обновление)."""
 
+# Префикс для ссылок пожертвований.
 PREFIX_DONATION_URL: str = '/donation'
-"""Префикс для ссылок пожертвований."""
 
+# Префикс для ссылок проектов.
 PREFIX_PROJECT_URL: str = '/charity_project'
-"""Префикс для ссылок проектов."""
 
+# Префикс для ссылок авторизации.
 PREFIX_AUTH_URL: str = f'/{AUTH_TAG_URL}'
-"""Префикс для ссылок авторизации."""
 
+# Префикс для ссылок пользователей.
 PREFIX_USERS_URL: str = f'/{USER_TAG_URL}'
-"""Префикс для ссылок пользователей."""
 
+# Адрес для входа и выхода по JWT токену.
 JWT_URL: str = f'{PREFIX_AUTH_URL}/jwt'
-"""Адрес для входа и выхода по JWT токену."""
 
+# Поле user_id.
 USER_ID: str = 'user_id'
-"""Поле user_id."""
 
+# Максимальная длина названия проекта.
 MAX_LENGTH_NAME: int = 100
-"""Максимальная длина названия проекта."""
 
+# Минимальная длина имени и описания проекта.
 MIN_LENGTH_NAME_AND_DESCRIPTION: int = 1
-"""Минимальная длина имени и описания проекта."""
 
+# Разрешенные ссылки для google api.
 SCOPES: list = [
     'https://www.googleapis.com/auth/spreadsheets',
     'https://www.googleapis.com/auth/drive'
 ]
-"""Разрешенные ссылки для google api."""
 
+# Информация про аккаунт проекта.
 INFO: dict = {
     'type': settings.type,
     'project_id': settings.project_id,
@@ -55,22 +56,18 @@ INFO: dict = {
     'auth_provider_x509_cert_url': settings.auth_provider_x509_cert_url,
     'client_x509_cert_url': settings.client_x509_cert_url
 }
-"""Информация про аккаунт проекта."""
 
+# Название атрибута открытых дней для проекта.
 LABEL_OPEN_DAYS: str = 'open_days'
-"""Название атрибута открытых дней для проекта."""
 
-FORMAT: str = "%Y/%m/%d %H:%M:%S"
-"""Формат даты для таблицы."""
+# Формат даты для таблицы.
+FORMAT: str = '%Y/%m/%d %H:%M:%S'
 
+# Количество строк в таблице.
 ROW_COUNT: int = 100
-"""Количество строк в таблице."""
 
+# Количество колонок в таблице.
 COLUMN_COUNT: int = 100
-"""Количество колонок в таблице."""
 
-RANGE_IN_TABLE: str = 'A1:E30'
-"""Допустимые поля в таблице."""
-
+# Тип ввода значений в таблицу.
 VALUE_INPUT_OPTION: str = 'USER_ENTERED'
-"""Тип ввода значений в таблицу."""

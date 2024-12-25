@@ -5,7 +5,7 @@ from sqlalchemy import Boolean, CheckConstraint, Column, DateTime, Integer
 from app.core.db import Base
 
 
-class ProjectDonationMixin(Base):
+class ProjectDonation(Base):
     """Миксин для моделей CharityProject и Donation."""
     __abstract__ = True
 
@@ -17,4 +17,11 @@ class ProjectDonationMixin(Base):
 
     __table_args__ = (
         CheckConstraint('full_amount > 0', name='check_full_amount_positive'),
+        CheckConstraint(
+            'invested_amount <= full_amount',
+            name='check_full_amount_more_invested_amount'
+        ),
     )
+
+    def __repr__(self) -> str:
+        return f'{self.full_amount=}, {self.create_date=}'

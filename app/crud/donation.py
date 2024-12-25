@@ -14,25 +14,11 @@ class CRUDDonation(CRUDBase):
             user: User,
             session: AsyncSession,
     ) -> Optional[list[Donation]]:
-        donations = await session.execute(
+        return await session.execute(
             select(Donation).where(
                 Donation.user_id == user.id
             )
-        )
-        return donations.scalars().all()
-
-    async def get_free_donations(
-            self,
-            session: AsyncSession,
-    ) -> Optional[list[Donation]]:
-        free_donations = await session.execute(
-            select(Donation).where(
-                Donation.fully_invested == 0
-            ).order_by(
-                Donation.create_date
-            )
-        )
-        return free_donations.scalars().all()
+        ).scalars().all()
 
 
 donation_crud = CRUDDonation(Donation)

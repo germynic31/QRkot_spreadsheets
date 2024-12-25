@@ -26,8 +26,17 @@ async def create_donation(
         session: AsyncSession = Depends(get_async_session),
         user: User = Depends(current_user),
 ) -> Donation:
-    donation: Donation = await donation_crud.create(donation, session, user)
-    await invest(donation=donation, session=session)
+    donation: Donation = await donation_crud.create(
+        donation,
+        session,
+        user,
+        commit=False
+    )
+    open_projects = await donation_crud.get_open_projects(session)
+    updated_objects = invest(donation, open_projects)
+    session.add_all(updated_objects)
+    await session.commit()
+    await session.refresh(donation)
     return donation
 
 

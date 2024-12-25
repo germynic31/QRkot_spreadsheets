@@ -1,15 +1,12 @@
 from sqlalchemy import Column, ForeignKey, Integer, Text
 
-from app.models.mixins import ProjectDonationMixin
+from app.models.mixins import ProjectDonation
 
 
-class Donation(ProjectDonationMixin):
+class Donation(ProjectDonation):
     """Модель для пожертвований."""
     user_id = Column(Integer, ForeignKey('user.id'))
     comment = Column(Text, nullable=True)
 
-    def __str__(self) -> str:
-        return (
-            f'{self.comment if self.comment else super.__str__(self)}, '
-            f'Сумма пожертвования: {self.full_amount}'
-        )
+    def __repr__(self) -> str:
+        return f'{self.user_id=}, {self.comment=}'

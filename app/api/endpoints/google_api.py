@@ -1,8 +1,11 @@
+import logging
+
 from aiogoogle import Aiogoogle
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.db import get_async_session
+from app.core.exceptions import NotEnoughSpaceInTable
 from app.core.google_client import get_service
 from app.core.user import current_superuser
 from app.crud.project import charity_project_crud
@@ -23,12 +26,31 @@ async def get_top(
         wrapper_services: Aiogoogle = Depends(get_service)
 
 ):
-    reservations = await charity_project_crud.get_projects_by_completion_rate(
+    projects = await charity_project_crud.get_projects_by_completion_rate(
         session
     )
-    spreadsheetid = await spreadsheets_create(wrapper_services)
-    await set_user_permissions(spreadsheetid, wrapper_services)
-    await spreadsheets_update_value(spreadsheetid,
-                                    reservations,
-                                    wrapper_services)
-    return reservations
+    spreadsheet_id, spreadsheet_url = await spreadsheets_create(
+        wrapper_services
+    )
+    await set_user_permissions(spreadsheet_id, wrapper_services)
+    try:
+        await spreadsheets_update_value(
+            spreadsheet_id,
+            projects,
+            wrapper_services
+        )
+    except NotEnoughSpaceInTable:
+        error_message = 'Недостаточно места в таблице для записи'
+        logging.error(error_message)
+        raise HTTPException(
+            status_code=400,
+            detail=error_message
+        )
+    except Exception as e:
+        error_message = f'Произошла непредвиденная ошибка: {e}'
+        logging.error(error_message)
+        raise HTTPException(
+            status_code=500,
+            detail=error_message
+        )
+    return spreadsheet_url

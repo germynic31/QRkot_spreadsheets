@@ -5,7 +5,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.constants import USER_ID
-from app.models import User
+from app.models import CharityProject, Donation, User
 
 
 class CRUDBase:
@@ -44,15 +44,18 @@ class CRUDBase:
             self,
             obj_in,
             session: AsyncSession,
-            user: Optional[User] = None
+            user: Optional[User] = None,
+            commit: bool = True,
     ):
         obj_in_data = obj_in.dict()
         if user is not None:
             obj_in_data[USER_ID] = user.id
         db_obj = self.model(**obj_in_data)
+        db_obj.invested_amount = 0
         session.add(db_obj)
-        await session.commit()
-        await session.refresh(db_obj)
+        if commit:
+            await session.commit()
+            await session.refresh(db_obj)
         return db_obj
 
     async def update(
@@ -80,3 +83,29 @@ class CRUDBase:
         await session.delete(db_obj)
         await session.commit()
         return db_obj
+
+    async def get_free_donations(
+            self,
+            session: AsyncSession,
+    ) -> Optional[list[Donation]]:
+        free_donations = await session.execute(
+            select(Donation).where(
+                Donation.fully_invested == 0
+            ).order_by(
+                Donation.create_date
+            )
+        )
+        return free_donations.scalars().all()
+
+    async def get_open_projects(
+            self,
+            session: AsyncSession,
+    ) -> Optional[list[CharityProject]]:
+        open_projects = await session.execute(
+            select(CharityProject).where(
+                CharityProject.fully_invested == 0
+            ).order_by(
+                CharityProject.create_date
+            )
+        )
+        return open_projects.scalars().all()

@@ -31,9 +31,16 @@ async def create_new_charity_project(
     await check_project_name_duplicate(charity_project.name, session)
     new_project: CharityProject = await charity_project_crud.create(
         charity_project,
+        session,
+        commit=False
+    )
+    free_donations = await charity_project_crud.get_free_donations(
         session
     )
-    await invest(project=new_project, session=session)
+    updated_objects = invest(new_project, free_donations)
+    session.add_all(updated_objects)
+    await session.commit()
+    await session.refresh(new_project)
     return new_project
 
 
@@ -68,7 +75,6 @@ async def partially_update_charity_project(
     project: CharityProject = await charity_project_crud.update(
         project, obj_in, session
     )
-    await invest(project=project, session=session)
     return project
 
 

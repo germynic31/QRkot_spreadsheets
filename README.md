@@ -25,7 +25,7 @@ sudo nano .env
 #### Пример:
 ```dotenv
 API_APP_TITLE=Благотворительный фонд поддержки котиков
-API_DATABASE_URL=sqlite+aiosqlite:///./fastapi.db
+API_DATABASE_URL=sqlite+aiosqlite:///./db_name.db
 API_SECRET=secret
 
 # для google api
@@ -56,26 +56,8 @@ uvicorn app.main:app --reload
 
 ---
 
-### Makefile команды:
 
-#### Создать миграцию:
-```bash
-make cm msg="Ваш комментарий для миграции"
-```
-
-#### Применить миграции:
-```bash
-make migrate
-```
-
-#### Проверить на pep8:
-```bash
-make lint
-```
-
----
-
-### Документация находится по адресу [127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
+### Документация находится по адресу [127.0.0.1:8000/docs (Swagger)](http://127.0.0.1:8000/docs) или [127.0.0.1:8000/redoc (ReDoc)](http://127.0.0.1:8000/redoc)
 
 ---
 
