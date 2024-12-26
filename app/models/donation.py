@@ -5,6 +5,7 @@ from app.models.base_models import ProjectDonation
 
 class Donation(ProjectDonation):
     """Модель для пожертвований."""
+
     user_id = Column(Integer, ForeignKey('user.id'))
     comment = Column(Text, nullable=True)
 

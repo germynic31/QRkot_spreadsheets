@@ -7,6 +7,7 @@ from app.core.db import Base
 
 class ProjectDonation(Base):
     """Миксин для моделей CharityProject и Donation."""
+
     __abstract__ = True
 
     full_amount = Column(Integer, nullable=False)

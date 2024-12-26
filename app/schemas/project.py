@@ -8,6 +8,7 @@ from app.core.constants import MAX_LENGTH_NAME
 
 class CharityProjectBase(BaseModel):
     """Базовая схема для проектов."""
+
     name: str = Field(
         ...,
         min_length=1,
@@ -26,6 +27,7 @@ class CharityProjectCreate(CharityProjectBase):
 
 class CharityProjectUpdate(BaseModel):
     """Схема для обновления проектов."""
+
     name: Optional[str] = Field(
         None,
         min_length=1,
@@ -43,6 +45,7 @@ class CharityProjectUpdate(BaseModel):
 
 class CharityProjectDB(CharityProjectBase):
     """Схема проектов для базы данных."""
+
     id: int
     create_date: datetime = Field(default_factory=datetime.now)
     close_date: Optional[datetime]

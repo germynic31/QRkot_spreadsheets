@@ -6,6 +6,7 @@ from app.models.base_models import ProjectDonation
 
 class CharityProject(ProjectDonation):
     """Модель для благотворительных проектов."""
+
     name = Column(String(MAX_LENGTH_NAME), unique=True, nullable=False)
     description = Column(Text, nullable=False)
 
