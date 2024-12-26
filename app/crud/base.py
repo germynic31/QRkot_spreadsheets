@@ -5,7 +5,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.constants import USER_ID
-from app.models import CharityProject, Donation, User
+from app.models import User
 
 
 class CRUDBase:
@@ -84,28 +84,15 @@ class CRUDBase:
         await session.commit()
         return db_obj
 
-    async def get_free_donations(
+    async def get_open_objects(
             self,
             session: AsyncSession,
-    ) -> Optional[list[Donation]]:
-        free_donations = await session.execute(
-            select(Donation).where(
-                Donation.fully_invested == 0
-            ).order_by(
-                Donation.create_date
-            )
-        )
-        return free_donations.scalars().all()
-
-    async def get_open_projects(
-            self,
-            session: AsyncSession,
-    ) -> Optional[list[CharityProject]]:
+    ):
         open_projects = await session.execute(
-            select(CharityProject).where(
-                CharityProject.fully_invested == 0
+            select(self.model).where(
+                self.model.fully_invested == 0
             ).order_by(
-                CharityProject.create_date
+                self.model.create_date
             )
         )
         return open_projects.scalars().all()

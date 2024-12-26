@@ -34,9 +34,6 @@ USER_ID: str = 'user_id'
 # Максимальная длина названия проекта.
 MAX_LENGTH_NAME: int = 100
 
-# Минимальная длина имени и описания проекта.
-MIN_LENGTH_NAME_AND_DESCRIPTION: int = 1
-
 # Разрешенные ссылки для google api.
 SCOPES: list = [
     'https://www.googleapis.com/auth/spreadsheets',
@@ -56,9 +53,6 @@ INFO: dict = {
     'auth_provider_x509_cert_url': settings.auth_provider_x509_cert_url,
     'client_x509_cert_url': settings.client_x509_cert_url
 }
-
-# Название атрибута открытых дней для проекта.
-LABEL_OPEN_DAYS: str = 'open_days'
 
 # Формат даты для таблицы.
 FORMAT: str = '%Y/%m/%d %H:%M:%S'

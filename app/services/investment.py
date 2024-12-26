@@ -1,13 +1,13 @@
 from datetime import datetime
 
-from app.models.mixins import ProjectDonation
+from app.models import ProjectDonation
 
 
 def invest(
     target: ProjectDonation,
     sources: list[ProjectDonation]
-):
-    updated_objects = []
+) -> list[ProjectDonation]:
+    updated = []
     for source in sources:
         invest_amount = min(
             target.full_amount - target.invested_amount,
@@ -18,7 +18,7 @@ def invest(
             if object.invested_amount == object.full_amount:
                 object.close_date = datetime.now()
                 object.fully_invested = True
-        updated_objects.append(object)
+        updated.append(object)
         if target.fully_invested:
             break
-    return updated_objects
+    return updated

@@ -3,19 +3,19 @@ from typing import Optional
 
 from pydantic import BaseModel, Extra, Field, PositiveInt
 
-from app.core.constants import MAX_LENGTH_NAME, MIN_LENGTH_NAME_AND_DESCRIPTION
+from app.core.constants import MAX_LENGTH_NAME
 
 
 class CharityProjectBase(BaseModel):
     """Базовая схема для проектов."""
     name: str = Field(
         ...,
-        min_length=MIN_LENGTH_NAME_AND_DESCRIPTION,
+        min_length=1,
         max_length=MAX_LENGTH_NAME
     )
     description: str = Field(
         ...,
-        min_length=MIN_LENGTH_NAME_AND_DESCRIPTION
+        min_length=1
     )
     full_amount: PositiveInt = Field()
 
@@ -28,12 +28,12 @@ class CharityProjectUpdate(BaseModel):
     """Схема для обновления проектов."""
     name: Optional[str] = Field(
         None,
-        min_length=MIN_LENGTH_NAME_AND_DESCRIPTION,
+        min_length=1,
         max_length=100
     )
     description: Optional[str] = Field(
         None,
-        min_length=MIN_LENGTH_NAME_AND_DESCRIPTION
+        min_length=1
     )
     full_amount: Optional[PositiveInt] = Field(None)
 

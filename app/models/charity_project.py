@@ -1,7 +1,7 @@
 from sqlalchemy import Column, String, Text
 
 from app.core.constants import MAX_LENGTH_NAME
-from app.models.mixins import ProjectDonation
+from app.models.base_models import ProjectDonation
 
 
 class CharityProject(ProjectDonation):
@@ -10,4 +10,4 @@ class CharityProject(ProjectDonation):
     description = Column(Text, nullable=False)
 
     def __repr__(self) -> str:
-        return f'{self.name=}'
+        return f'{self.name=}' + super.__repr__(self)

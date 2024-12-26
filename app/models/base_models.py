@@ -21,7 +21,14 @@ class ProjectDonation(Base):
             'invested_amount <= full_amount',
             name='check_full_amount_more_invested_amount'
         ),
+        CheckConstraint(
+            'invested_amount >= 0',
+            name='check_invested_amount_positive'
+        ),
     )
 
     def __repr__(self) -> str:
-        return f'{self.full_amount=}, {self.create_date=}'
+        return (
+            f'{self.full_amount=}, {self.invested_amount=},'
+            f' {self.create_date=}, {self.close_date=}'
+        )

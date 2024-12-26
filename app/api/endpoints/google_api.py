@@ -1,11 +1,11 @@
 import logging
+from http import HTTPStatus
 
 from aiogoogle import Aiogoogle
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.db import get_async_session
-from app.core.exceptions import NotEnoughSpaceInTable
 from app.core.google_client import get_service
 from app.core.user import current_superuser
 from app.crud.project import charity_project_crud
@@ -39,18 +39,10 @@ async def get_top(
             projects,
             wrapper_services
         )
-    except NotEnoughSpaceInTable:
-        error_message = 'Недостаточно места в таблице для записи'
+    except MemoryError as error_message:
         logging.error(error_message)
         raise HTTPException(
-            status_code=400,
-            detail=error_message
-        )
-    except Exception as e:
-        error_message = f'Произошла непредвиденная ошибка: {e}'
-        logging.error(error_message)
-        raise HTTPException(
-            status_code=500,
+            status_code=HTTPStatus.BAD_REQUEST,
             detail=error_message
         )
     return spreadsheet_url

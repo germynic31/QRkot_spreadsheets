@@ -8,6 +8,7 @@ from app.api.validators import (check_full_amount, check_invested_for_delete,
 from app.core.constants import PROJECTS_URL
 from app.core.db import get_async_session
 from app.core.user import current_superuser
+from app.crud.donation import donation_crud
 from app.crud.project import charity_project_crud
 from app.models import CharityProject
 from app.schemas.project import (CharityProjectCreate, CharityProjectDB,
@@ -34,11 +35,12 @@ async def create_new_charity_project(
         session,
         commit=False
     )
-    free_donations = await charity_project_crud.get_free_donations(
-        session
+    session.add_all(
+        invest(
+            new_project,
+            await donation_crud.get_open_objects(session)
+        )
     )
-    updated_objects = invest(new_project, free_donations)
-    session.add_all(updated_objects)
     await session.commit()
     await session.refresh(new_project)
     return new_project

@@ -3,7 +3,6 @@ from typing import Optional
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core.constants import LABEL_OPEN_DAYS
 from app.crud.base import CRUDBase
 from app.models import CharityProject
 
@@ -32,7 +31,7 @@ class CRUDCharityProject(CRUDBase):
                 (
                     func.julianday(CharityProject.close_date) -
                     func.julianday(CharityProject.create_date)
-                ).label(LABEL_OPEN_DAYS),
+                ).label('open_days'),
                 CharityProject.description
             ).where(
                 CharityProject.fully_invested
@@ -40,7 +39,7 @@ class CRUDCharityProject(CRUDBase):
                 (
                     func.julianday(CharityProject.close_date) -
                     func.julianday(CharityProject.create_date)
-                ).label(LABEL_OPEN_DAYS)
+                ).label('open_days')
             )
         )
         return reservations.all()
