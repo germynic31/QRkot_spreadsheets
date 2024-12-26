@@ -9,6 +9,7 @@ def invest(
 ) -> list[ProjectDonation]:
     updated = []
     for source in sources:
+        updated.append(source)
         invest_amount = min(
             target.full_amount - target.invested_amount,
             source.full_amount - source.invested_amount,
@@ -18,7 +19,6 @@ def invest(
             if object.invested_amount == object.full_amount:
                 object.close_date = datetime.now()
                 object.fully_invested = True
-        updated.append(object)
         if target.fully_invested:
             break
     return updated

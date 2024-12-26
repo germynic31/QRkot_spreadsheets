@@ -74,24 +74,24 @@ async def spreadsheets_update_value(
         *[list(map(str, project)) for project in projects]
     ]
 
-    len_add_rows = len(projects) + len(TABLE_HEADER_SAMPLE)
-    if ROW_COUNT <= len_add_rows:
-        raise MemoryError(
+    rows = len(table_values)
+    if ROW_COUNT <= rows:
+        raise ValueError(
             f'Недостаточно строк в таблице для записи '
-            f'(count rows:{ROW_COUNT} <= count projects:{len_add_rows})'
+            f'(count rows:{ROW_COUNT} <= count projects:{rows})'
         )
 
-    len_add_columns = len(TABLE_HEADER_SAMPLE[2])
-    if COLUMN_COUNT <= len_add_columns:
-        raise MemoryError(
+    columns = max(len(sublist) for sublist in table_values)
+    if COLUMN_COUNT <= columns:
+        raise ValueError(
             f'Недостаточно колонок в таблице для записи '
-            f'(count columns:{COLUMN_COUNT} <= count fields:{len_add_columns})'
+            f'(count columns:{COLUMN_COUNT} <= count fields:{columns})'
         )
 
     await wrapper_services.as_service_account(
         service.spreadsheets.values.update(
             spreadsheetId=spreadsheetid,
-            range=f'R1C1:R{len_add_rows}C{len_add_columns}',
+            range=f'R1C1:R{rows}C{columns}',
             valueInputOption=VALUE_INPUT_OPTION,
             json={
                 'majorDimension': 'ROWS',

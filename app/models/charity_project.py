@@ -11,4 +11,4 @@ class CharityProject(ProjectDonation):
     description = Column(Text, nullable=False)
 
     def __repr__(self) -> str:
-        return f'{self.name=}' + super.__repr__(self)
+        return f'{self.name=}, {super().__repr__()}'

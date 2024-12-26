@@ -39,7 +39,7 @@ async def get_top(
             projects,
             wrapper_services
         )
-    except MemoryError as error_message:
+    except ValueError as error_message:
         logging.error(error_message)
         raise HTTPException(
             status_code=HTTPStatus.BAD_REQUEST,
