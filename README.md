@@ -61,10 +61,4 @@ uvicorn app.main:app --reload
 
 ---
 
-#### Авторы: [Герман Деев](https://github.com/germynic31), [Yandex-Practicum](https://github.com/Yandex-Practicum)
-
----
-
-Проект создан в учебных целях на курсе Я.Практикума
-
-
+#### Автор: [Герман Деев](https://github.com/germynic31)
